@@ -3,11 +3,14 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Carousel } from 'react-responsive-carousel';
+import { Link } from 'react-router-dom';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [slidePaused, setSlidePaused] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const heroSlides = [
     {
@@ -69,13 +72,21 @@ export default function Home() {
     },
   ];
 
-  // Auto slide for hero
   useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => setPrefersReducedMotion(media.matches);
+    updatePreference();
+    media.addEventListener('change', updatePreference);
+    return () => media.removeEventListener('change', updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (slidePaused || prefersReducedMotion) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [heroSlides.length]);
+  }, [heroSlides.length, slidePaused, prefersReducedMotion]);
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
@@ -94,7 +105,7 @@ export default function Home() {
                 index === currentSlide ? 'opacity-100' : 'opacity-0'
               }`}
             >
-              <img src={slide.image} alt={slide.alt} className="w-full h-full object-cover" />
+              <img src={slide.image} alt={index === currentSlide ? slide.alt : ''} loading={index === 0 ? 'eager' : 'lazy'} fetchPriority={index === 0 ? 'high' : 'auto'} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/40" />
             </div>
           ))}
@@ -109,43 +120,23 @@ export default function Home() {
               Engage • Empower • Earn
             </p>
 
-            {/* App Download Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              {/* Android Button */}
-              <a
-                href="#"
-                className="flex items-center gap-3 bg-white text-gray-900 hover:bg-gray-100 px-6 py-3 rounded-xl transition-all shadow-lg hover:shadow-xl"
-              >
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-                  alt="Get it on Google Play"
-                  className="h-10"
-                />
-              </a>
-
-              {/* iOS  */}
-              <a
-                href="#"
-                className="flex items-center gap-3 bg-white text-gray-900 hover:bg-gray-100 px-6 py-3 rounded-xl transition-all shadow-lg hover:shadow-xl"
-              >
-                <img
-                  src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-                  alt="Download on the App Store"
-                  className="h-10"
-                />
-              </a>
+              <Link to="/impact" className="rounded-xl bg-green-700 px-6 py-3 font-bold text-white shadow-lg transition-colors hover:bg-green-600">Explore the Impact Hub</Link>
+              <Link to="/contact" className="rounded-xl border border-white/70 bg-black/20 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/15">Contact the team</Link>
             </div>
           </div>
         </div>
 
         <button
           onClick={prevSlide}
+          aria-label="Show previous hero image"
           className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full backdrop-blur-sm transition-colors"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={nextSlide}
+          aria-label="Show next hero image"
           className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full backdrop-blur-sm transition-colors"
         >
           <ChevronRight className="w-6 h-6" />
@@ -156,11 +147,14 @@ export default function Home() {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
+              aria-label={`Show hero image ${index + 1} of ${heroSlides.length}`}
+              aria-current={index === currentSlide ? 'true' : undefined}
               className={`w-2 h-2 rounded-full transition-all ${
                 index === currentSlide ? 'bg-white w-8' : 'bg-white/50'
               }`}
             />
           ))}
+          <button onClick={() => setSlidePaused((paused) => !paused)} className="ml-2 rounded bg-black/50 px-2 py-1 text-xs font-semibold text-white" aria-label={slidePaused ? 'Resume hero slideshow' : 'Pause hero slideshow'}>{slidePaused ? 'Play' : 'Pause'}</button>
         </div>
       </section>
 
@@ -183,7 +177,7 @@ export default function Home() {
       </section>
 
       {/* BRANDS SECTION */}
-      <BrandsSection />
+      <BrandsSection prefersReducedMotion={prefersReducedMotion} />
 
       {/* TESTIMONIALS */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
@@ -215,12 +209,14 @@ export default function Home() {
 
             <button
               onClick={prevTestimonial}
+              aria-label="Show previous testimonial"
               className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 p-3 rounded-full shadow-lg transition-colors"
             >
               <ChevronLeft className="w-6 h-6 text-gray-700 dark:text-gray-300" />
             </button>
             <button
               onClick={nextTestimonial}
+              aria-label="Show next testimonial"
               className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 p-3 rounded-full shadow-lg transition-colors"
             >
               <ChevronRight className="w-6 h-6 text-gray-700 dark:text-gray-300" />
@@ -231,6 +227,8 @@ export default function Home() {
                 <button
                   key={index}
                   onClick={() => setCurrentTestimonial(index)}
+                  aria-label={`Show testimonial ${index + 1} of ${testimonials.length}`}
+                  aria-current={index === currentTestimonial ? 'true' : undefined}
                   className={`w-2 h-2 rounded-full transition-all ${
                     index === currentTestimonial ? 'bg-green-600 w-8' : 'bg-gray-300 dark:bg-gray-600'
                   }`}
@@ -245,7 +243,7 @@ export default function Home() {
 }
 
 //  BRANDS SECTION
-const BrandsSection = () => {
+const BrandsSection = ({ prefersReducedMotion }: { prefersReducedMotion: boolean }) => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   const brands = [
@@ -257,10 +255,10 @@ const BrandsSection = () => {
     { name: 'Victoria University', logo: 'https://vu.ac.ug/_nuxt/img/vu-logo-with-words.ac2cb23.png' },
     { name: 'Airtel Uganda', logo: 'https://cdn-webportal.airtelstream.net/website/uganda/assets/images/logo.svg' },
     { name: 'Nema', logo: 'https://climatehubinternational.com/wp-content/uploads/2023/04/nema.png' },
-    { name: 'Climate Hub International', logo: 'http://climatehubinternational.com/wp-content/uploads/2022/07/logo-web-green.jpg' },
+    { name: 'Climate Hub International', logo: 'https://climatehubinternational.com/wp-content/uploads/2022/07/logo-web-green.jpg' },
     { name: 'Total Energies', logo: 'https://climatehubinternational.com/wp-content/uploads/2023/04/total-en.webp' },
-    { name: 'UNDP', logo: ' https://climatehubinternational.com/wp-content/uploads/2023/04/united-nations.png ' },
-    { name: 'Agro consotium', logo: ' https://climatehubinternational.com/wp-content/uploads/2023/04/agro.jpeg' },
+    { name: 'UNDP', logo: 'https://climatehubinternational.com/wp-content/uploads/2023/04/united-nations.png' },
+    { name: 'Agro consotium', logo: 'https://climatehubinternational.com/wp-content/uploads/2023/04/agro.jpeg' },
   ];
 
   return (
@@ -314,7 +312,7 @@ const BrandsSection = () => {
             showStatus={false}
             showThumbs={false}
             infiniteLoop
-            autoPlay
+              autoPlay={!prefersReducedMotion}
             interval={3000}
             transitionTime={800}
             centerMode
