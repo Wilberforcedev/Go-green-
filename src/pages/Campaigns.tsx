@@ -8,26 +8,26 @@ export default function Campaigns() {
     {
       title: 'One Million Trees',
       description:
-        'Our flagship reforestation campaign aims to plant one million trees across five African countries by 2026. Each tree represents hope, fresh air, and a sustainable future for generations to come.',
+        'A community reforestation campaign supporting tree planting and care. Contact the team for the current scope, locations and verified progress update.',
       image:
         'https://images.pexels.com/photos/1072824/pexels-photo-1072824.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      stats: '500,000+ trees planted',
+      stats: 'Current verified progress available from the team',
     },
     {
       title: 'Clean Streets, Green Future',
       description:
-        'Community-driven waste collection and recycling programs that transform neighborhoods into cleaner, healthier spaces. We empower local teams with the tools and training needed to manage waste sustainably.',
+        'Community-driven waste collection and recycling programs that support cleaner neighborhoods. Contact the team for a dated, verified progress update.',
       image:
         'https://climatehubinternational.com/wp-content/uploads/2022/09/bins-chi.jpg',
-      stats: '1,000+ tons of waste collected',
+      stats: 'Current verified progress available from the team',
     },
     {
       title: 'Plastic-Free Homes',
       description:
-        'An educational initiative helping families reduce single-use plastics and adopt sustainable alternatives. Through workshops and community events, we are building a plastic-conscious society.',
+        'An educational initiative helping families reduce single-use plastics and adopt sustainable alternatives through workshops and community events.',
       image:
         'https://images.pexels.com/photos/802221/pexels-photo-802221.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      stats: '5,000+ households engaged',
+      stats: 'Current verified progress available from the team',
     },
   ];
 
@@ -44,10 +44,10 @@ export default function Campaigns() {
     { name: 'Victoria University', logo: 'https://vu.ac.ug/_nuxt/img/vu-logo-with-words.ac2cb23.png' },
     { name: 'Airtel Uganda', logo: 'https://cdn-webportal.airtelstream.net/website/uganda/assets/images/logo.svg' },
     { name: 'Nema', logo: 'https://climatehubinternational.com/wp-content/uploads/2023/04/nema.png' },
-    { name: 'Climate Hub International', logo: 'http://climatehubinternational.com/wp-content/uploads/2022/07/logo-web-green.jpg' },
+    { name: 'Climate Hub International', logo: 'https://climatehubinternational.com/wp-content/uploads/2022/07/logo-web-green.jpg' },
     { name: 'Total Energies', logo: 'https://climatehubinternational.com/wp-content/uploads/2023/04/total-en.webp' },
-    { name: 'UNDP', logo: ' https://climatehubinternational.com/wp-content/uploads/2023/04/united-nations.png ' },
-    { name: 'Agro consotium', logo: ' https://climatehubinternational.com/wp-content/uploads/2023/04/agro.jpeg' },
+    { name: 'UNDP', logo: 'https://climatehubinternational.com/wp-content/uploads/2023/04/united-nations.png' },
+    { name: 'Agro consotium', logo: 'https://climatehubinternational.com/wp-content/uploads/2023/04/agro.jpeg' },
   ];
 
     return (

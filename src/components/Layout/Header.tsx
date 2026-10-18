@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Menu, X, Moon, Sun, Leaf } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../contexts/useTheme';
 
 interface HeaderProps {
   currentPage: string;
@@ -45,6 +45,7 @@ export default function Header({ currentPage, onNavigate }: HeaderProps) {
               <button
                 key={item.value}
                 onClick={() => handleNavClick(item.value)}
+                aria-current={currentPage === item.value ? 'page' : undefined}
                 className={`text-sm font-medium transition-colors ${
                   currentPage === item.value
                     ? 'text-green-600 dark:text-green-400'
@@ -96,6 +97,7 @@ export default function Header({ currentPage, onNavigate }: HeaderProps) {
                 <button
                   key={item.value}
                   onClick={() => handleNavClick(item.value)}
+                  aria-current={currentPage === item.value ? 'page' : undefined}
                   className={`text-left px-4 py-2 rounded transition-colors ${
                     currentPage === item.value
                       ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400'

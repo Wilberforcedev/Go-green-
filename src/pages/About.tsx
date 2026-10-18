@@ -110,11 +110,9 @@ export default function About() {
                 empowered with the right resources and knowledge, can drive meaningful environmental change.
               </p>
               <p>
-                Since our inception, we have grown from a small grassroots initiative into a regional
-                movement spanning five countries across East and West Africa. Through partnerships with
-                local communities, international organizations, and dedicated volunteers, we have planted
-                over 500,000 trees, collected thousands of tons of waste, and brought sustainable energy
-                solutions to countless homes.
+                Through partnerships with local communities, organizations and volunteers, we support
+                tree planting, waste reduction and access to sustainable energy. Contact the team for
+                current, verified programme figures and locations.
               </p>
               <p>
                 Today, we continue to expand our reach and deepen our impact, always staying true to our
